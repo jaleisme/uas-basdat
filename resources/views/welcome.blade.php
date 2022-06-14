@@ -24,6 +24,7 @@
 
 <body id="page-top">
     <input type="hidden" id="csrf" value="{{ csrf_token() }}">
+    <input type="hidden" id="today" value="{{ now()->format('Y-m-d') }}">
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -462,15 +463,15 @@
                     <div class="row">
 
                         <!-- Area Chart -->
-                        <div class="col-6">
+                        <div class="col-12">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 justify-content-between">
                                     <div class="row w-100">
-                                        <div class="col-9 d-flex flex-row align-items-center ">
+                                        <div class="col-6 d-flex flex-row align-items-center ">
                                             <h6 class="m-0 font-weight-bold text-success">Monthly Order Report</h6>
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-6">
                                             <input type="number" min="1900" max="2099" step="1" value="{{ now()->year }}" id="yearEarning" class="form-control" />
                                         </div>
                                     </div>
@@ -485,16 +486,16 @@
                         </div>
 
                         <!-- Area Chart -->
-                        <div class="col-6">
+                        <div class="col-12">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 justify-content-between">
                                     <div class="row w-100">
-                                        <div class="col-9 d-flex flex-row align-items-center ">
-                                            <h6 class="m-0 font-weight-bold text-success">Monthly Order Report</h6>
+                                        <div class="col-6 d-flex flex-row align-items-center ">
+                                            <h6 class="m-0 font-weight-bold text-warning">Weekly Order Report</h6>
                                         </div>
-                                        <div class="col-3">
-                                            <input type="number" min="1900" max="2099" step="1" value="{{ now()->year }}" id="yearEarning" class="form-control" />
+                                        <div class="col-6">
+                                            <input type="date" value="" id="monthEarning" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
@@ -611,7 +612,8 @@
     <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>
 
     <!-- Page level custom scripts -->
-    <script src="{{ asset('js/demo/chart-area-demo.js')}}"></script>
+    <script src="{{ asset('js/demo/monthly-order-chart.js')}}"></script>
+    <script src="{{ asset('js/demo/weekly-order-chart.js')}}"></script>
     <script src="{{ asset('js/demo/chart-pie-demo.js')}}"></script>
 
 </body>

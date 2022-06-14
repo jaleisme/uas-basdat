@@ -4,17 +4,59 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    public function index(){
-        $weekly_order = DB::table('orders')
+    public function weeklyOrder(Request $request){
+        // Request processing
+        $date = explode("-", $request->month);
+
+        //Filter Gonna Be
+        $selected_year = $date[0];
+        $selected_month = $date[1];
+        $selected_day = $date[2];
+
+        //Creating range date
+        $weeks_start = [];
+        $weekly_orders = [];
+        $temp_start = 0;
+        
+        $from_date = new Carbon($selected_year.'-'.$selected_month.'-'.$selected_day);
+        // $from_date = $from_date->startOfWeek()->format('Y-m-d H:i');
+        $until_date = new Carbon($selected_year.'-'.$selected_month.'-'.$selected_day);
+        $until_date = $until_date->endOfMonth();
+
+        //Getting total days of month
+        $total_days = $from_date->diffInDays($until_date);
+
+        for($i = 1; $i <= $total_days; $i++){
+            $date_loop = new Carbon($selected_year.'-'.$selected_month.'-'.$i);
+            $temp_start = $date_loop->startOfWeek()->format('d');
+            if(count($weeks_start) == 0){
+                $weeks_start[] = $temp_start;
+            }
+            else{
+                if(end($weeks_start) != $temp_start){
+                    $weeks_start[] = $temp_start;
+                }
+            }
+        }
+
+        //Getting query per date
+        foreach ($weeks_start as $key => $start) {
+            $weekly_orders["dates"][] = $selected_year.'-'.$selected_month.'-'.$start;
+            $query = DB::table('orders')
             ->select(DB::raw("COUNT(orderID) as totalOrder"))
-            ->whereBetween('orderDate', ['2021-11-01', '2021-12-01'])
-            // ->groupBy(DB::raw("CONCAT(MONTH(orderDate), '/', WEEK(orderDate)"))
-            ->get()->toArray();
-        dd($weekly_order);
-        // return view('welcome');
+            ->whereBetween('orderDate', [$selected_year.'-'.$selected_month.'-'.$start, $selected_year.'-'.$selected_month.'-'.($start+6)])
+            ->first();
+            $weekly_orders["totalOrder"][] = $query->totalOrder;
+        }
+        return response(json_encode($weekly_orders));
+    }
+
+    public function index(){
+        return view('welcome');
     }
 
     public function monthlyOrder(Request $request){

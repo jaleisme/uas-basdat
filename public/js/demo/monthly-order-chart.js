@@ -3,14 +3,14 @@ Chart.defaults.global.defaultFontColor = '#858796';
 let monthly_order_request;
 
 $(document).ready(function(){
-    loadChart();
+    loadMonthlyChart();
 })
 
 $("#yearEarning").change(function () {
-    loadChart();       
+    loadMonthlyChart();       
 });
 
-function loadChart(){
+function loadMonthlyChart(){
     $.ajax({
         type: "POST",
         url: '/monthlyOrder',
