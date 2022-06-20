@@ -1,41 +1,41 @@
 // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
-let dailyBestSelling = [];
+let monthlyBestSelling = [];
 
 $(document).ready(function(){
-    $("#dailybestfilter").val($("#today").val())
-    console.log($("#dailybestfilter").val())
-    loadDailyBest();
+    $("#monthlybestfilter").val($("#today").val())
+    console.log($("#monthlybestfilter").val())
+    loadmonthlyBest();
 })
 
-$("#dailybestfilter").change(function () {
-    console.log($("#dailybestfilter").val())
-    loadDailyBest()     
+$("#monthlybestfilter").change(function () {
+    console.log($("#monthlybestfilter").val())
+    loadmonthlyBest()     
 });
 
-function loadDailyBest(){
+function loadmonthlyBest(){
   $.ajax({
       type: "POST",
-      url: '/dailyBest',
+      url: '/monthlyBest',
       data: {
           "_token": $('#csrf').val(),
-          "date": $('#dailybestfilter').val()
+          "date": $('#monthlybestfilter').val()
       }
   })
   .done(function(data, textStatus, jqXHR){
       // Response Processing
-      dailyBestSelling = []
-      dailyBestSelling = JSON.parse(data);
+      monthlyBestSelling = []
+      monthlyBestSelling = JSON.parse(data);
       
       // Pie Chart
-      var ctx3 = document.getElementById("dailyBestChart");
-      var dailyBest = new Chart(ctx3, {
+      var ctx3 = document.getElementById("monthlyBestChart");
+      var monthlyBest = new Chart(ctx3, {
         type: 'doughnut',
         data: {
-          labels: dailyBestSelling.labels,
+          labels: monthlyBestSelling.labels,
           datasets: [{
-            data: dailyBestSelling.values,
+            data: monthlyBestSelling.values,
             backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc','#4e73df', '#1cc88a', '#36b9cc','#4e73df', '#1cc88a', '#36b9cc','#4e73df'],
             hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
             hoverBorderColor: "rgba(234, 236, 244, 1)",
@@ -61,11 +61,11 @@ function loadDailyBest(){
       });
   })
   .then(function(data){
-      // console.log(dailyBestSelling.labels[0].length);
-      if(dailyBestSelling.labels[0].length == 2){
-        $('#dailybestseller').text("No sales conducted")
+      // console.log(monthlyBestSelling.labels[0].length);
+      if(monthlyBestSelling.labels[0].length == 2){
+        $('#monthlybestseller').text("No sales conducted")
       } else{
-        $('#dailybestseller').text(dailyBestSelling.labels[0]+": "+dailyBestSelling.values[0])
+        $('#monthlybestseller').text(monthlyBestSelling.labels[0]+": "+monthlyBestSelling.values[0])
       }
   })
 }

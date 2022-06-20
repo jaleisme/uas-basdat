@@ -508,7 +508,7 @@
                             </div>
                         </div>
 
-                        <!-- Pie Chart -->
+                        <!-- Daily Best Chart -->
                         <div class="col-6">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
@@ -538,6 +538,37 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Monthly Best Chart -->
+                        <div class="col-6">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <div class="col-6">
+                                        <h6 class="m-0 font-weight-bold text-primary">Monthly Best Selling</h6>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="date" min="1900" max="2099" step="1" id="monthlybestfilter" class="form-control" />
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="monthlyBestChart"></canvas>
+                                    </div>
+                                    <div class="mt-4 text-center small">
+                                        <span class="font-weight-bold">
+                                        This month's Best Seller
+                                        </span>
+                                        <br>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-primary"></i> <span id="monthlybestseller"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -550,7 +581,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; Jale Was Here</span>
                     </div>
                 </div>
             </footer>
@@ -604,6 +635,7 @@
     <script src="{{ asset('js/demo/monthly-order-chart.js')}}"></script>
     <script src="{{ asset('js/demo/weekly-order-chart.js')}}"></script>
     <script src="{{ asset('js/demo/daily-best-chart.js')}}"></script>
+    <script src="{{ asset('js/demo/monthly-best-chart.js')}}"></script>
 
 </body>
 

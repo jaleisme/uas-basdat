@@ -94,7 +94,33 @@ class DashboardController extends Controller
         return json_encode($dailybest);
     }
 
-    public function index(){
+    public function monthlyBest(Request $request){
+        ($request->date) ? $date = $request->date : $date = '2022-01-01';
+        $date = explode("-", $date);
+
+        //Filter Gonna Be
+        $selected_year = $date[0];
+        $selected_month = $date[1];
+        $selected_day = $date[2];
+        $query = DB::table('orders')
+            ->select('orderDate', 'products.productID', 'products.productName', DB::raw('SUM(quantity) AS total'))
+            ->leftJoin('order_details', 'orders.orderID', 'order_details.orderID')
+            ->leftJoin('products', 'order_details.productId', 'products.productID')
+            ->whereBetween('orderDate', [$selected_year.'-'.$selected_month.'-'.$selected_day, $selected_year.'-'.$selected_month.'-'.($selected_day+30)])
+            ->groupBy('products.productID')
+            ->orderBy('total', 'DESC')
+            ->limit(10)
+            ->get();
+        $monthlybest = [];
+        foreach($query as $q){
+            $monthlybest["labels"][] = $q->productName;
+            $monthlybest["values"][] = $q->total;
+        }
+        return json_encode($monthlybest);
+    }
+
+    public function index(Request $request){
+
         return view('welcome');
     }
 }
