@@ -55,10 +55,6 @@ class DashboardController extends Controller
         return response(json_encode($weekly_orders));
     }
 
-    public function index(){
-        return view('welcome');
-    }
-
     public function monthlyOrder(Request $request){
         // dd($request);
         for($month = 1; $month < 13; $month++){
@@ -77,5 +73,28 @@ class DashboardController extends Controller
             $monthly_order[] = $temp;
         }
         return response(json_encode($monthly_order));
+    }
+
+    public function dailyBest(Request $request){
+        $date = $request->date;
+        $query = DB::table('orders')
+            ->select('orderDate', 'products.productID', 'products.productName', DB::raw('SUM(quantity) AS total'))
+            ->leftJoin('order_details', 'orders.orderID', 'order_details.orderID')
+            ->leftJoin('products', 'order_details.productId', 'products.productID')
+            ->where('orderDate', $date)
+            ->groupBy('products.productID')
+            ->orderBy('total', 'DESC')
+            ->limit(10)
+            ->get();
+        $dailybest = [];
+        foreach($query as $q){
+            $dailybest["labels"][] = $q->productName;
+            $dailybest["values"][] = $q->total;
+        }
+        return json_encode($dailybest);
+    }
+
+    public function index(){
+        return view('welcome');
     }
 }

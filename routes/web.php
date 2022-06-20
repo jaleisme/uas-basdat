@@ -17,3 +17,4 @@ use App\Http\Controllers\DashboardController;
 Route::get('/', [DashboardController::class, 'index']);
 Route::post('/monthlyOrder', [DashboardController::class, 'monthlyOrder']);
 Route::post('/weeklyOrder', [DashboardController::class, 'weeklyOrder']);
+Route::post('/dailyBest', [DashboardController::class, 'dailyBest']);

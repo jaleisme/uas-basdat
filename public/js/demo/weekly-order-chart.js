@@ -4,7 +4,7 @@ let weekly_order_request = [];
 
 $(document).ready(function(){
     $("#monthEarning").val($("#today").val())
-    console.log($("#monthEarning").val())
+    // console.log($("#monthEarning").val())
     loadWeeklyChart();
 })
 
